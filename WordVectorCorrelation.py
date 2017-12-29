@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 # Model Choice
 model = gensim.models.Word2Vec.load('OOModel')
 # model = gensim.models.KeyedVectors.load_word2vec_format('GoogleModel.bin', binary=True)
-print(model["apple"])
+# print(model["apple"])
 
 
 def printEasy(forPrinting):
