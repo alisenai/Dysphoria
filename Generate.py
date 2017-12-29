@@ -2,12 +2,12 @@ import io
 import gensim
 
 # --- Config ---
-generateModel = False
 generateTrainingFiles = True
+generateModel = False
 dataFile = "OtakuOnsen - general.txt"  # Must be a generated file format ( See "OtakuOnsen - general.txt" for format )
-modelOutput = "OOModel"
 trainingFileIn = "train.from"  # Input
 trainingFileOut = "train.to"  # Output
+modelOutput = "OOModel"
 
 # --- Vars ---
 sentences = []
