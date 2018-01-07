@@ -6,7 +6,7 @@ import io
 dataSet = "OOSnippet.txt"
 
 
-# -- Return how similar two files are
+# -- Return how similar two strings are
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
 

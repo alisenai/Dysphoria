@@ -40,9 +40,8 @@ def genTrainFiles():
     toFile = io.open(trainingFileOut, "w", encoding="utf8")
     # -- Loop through and save data alternating between in / out --
     for i in range(len(sentences)):
-        sentence = ""
-        for j in range(len(sentences[i])):
-            sentence += sentences[i][j] + " "
+        # -- Join a all words in each word list within "sentences", adding spaces in between --
+        sentence = ("".join([(sentences[i][j] + " ") for j in range(len(sentences[i]))]))[:-1]
         if i % 2 == 0:
             toFile.write(sentence + "\n")
         else:
