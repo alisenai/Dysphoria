@@ -9,12 +9,12 @@ class NeuralNetwork:
     def __init__(self, inputSize, hiddenSize, hiddenCount, outputSize):
         self.layers, self.synapses = [], []
         self.synapses.append((2 * np.random.random((inputSize, hiddenSize)) - 1))
-        for i in range(hiddenCount):
+        for i in range(hiddenCount - 1):
             self.synapses.append((2 * np.random.random((hiddenSize, hiddenSize)) - 1))
         self.synapses.append((2 * np.random.random((hiddenSize, outputSize)) - 1))
 
     def nonlin(self, inputData, deriv=False):
-        return (inputData * (1 - inputData)) if deriv else (1 / (1 + np.exp(-inputData)))
+        return abs(inputData * (1 - inputData)) if deriv else abs(1 / (1 + np.exp(-inputData)))
 
     def predict(self, inputData):
         self.layers = [inputData]
