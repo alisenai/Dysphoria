@@ -1,84 +1,32 @@
-import io
-import gensim
+import models as models
 
+
+# TODO: models.Reddit()
 # --- Config ---
-generateTrainingFiles = True
+trainingFileOut = "train.to"  # Output for bot
+trainingFileIn = "train.from"  # Input for bot
+dataFile = "OtakuOnsen - general.txt"
+dataDirectory = "C:\\Users\\calin\\Desktop\\Subs\\"
+modelType = models.Anime(dataDirectory)
+# modelType = models.Discord(dataFile)
 generateModel = False
-dataFile = "OtakuOnsen - general.txt"  # Must be a generated file format ( See "OtakuOnsen - general.txt" for format )
-trainingFileIn = "train.from"  # Input
-trainingFileOut = "train.to"  # Output
 modelOutput = "OOModel"
-
-# --- Vars ---
-sentences = []
-
-
-# -- Functions --
-# Loads all the data into memory
-def loadData():
-    print("[Loading: " + dataFile + "]")
-    # Open data file provided by the config
-    data = io.open(dataFile, encoding="utf8")
-    parseNext = False
-    for i in data:
-        if parseNext:
-            if i == "\n":
-                parseNext = False
-                continue
-            # Clean up the cluttered lines
-            tidyLine = i.translate(str.maketrans('', '', "!.?,\n")).lower().split(" ")
-            sentences.append([i for i in tidyLine])
-        else:
-            parseNext = True
-    # Close io and finish
-    data.close()
-    print("[Done loading data]")
-
-
-# Generates alternating inputs and responses
-def genTrainFiles():
-    print("[Saving input data to: " + trainingFileIn + "]")
-    fromFile = io.open(trainingFileIn, "w", encoding="utf8")
-    print("[Saving output data to: " + trainingFileOut + "]")
-    toFile = io.open(trainingFileOut, "w", encoding="utf8")
-    # Loop through and save data alternating between in / out
-    for i in range(len(sentences)):
-        # Join a all words in each word list within "sentences", adding spaces in between
-        sentence = ("".join([(sentences[i][j] + " ") for j in range(len(sentences[i]))]))[:-1]
-        if i % 2 == 0:
-            toFile.write(sentence + "\n")
-        else:
-            fromFile.write(sentence + "\n")
-    # Close io and finish
-    fromFile.close()
-    toFile.close()
-    print("[Done saving training data]")
-
-
-# Generates the Word2Vec model
-def genModel():
-    print("[Generating model]")
-    # Generate Word2Vec model
-    model = gensim.models.Word2Vec(sentences, workers=4, size=300, min_count=1)  # size=100 by default
-    print("[Saving model as " + modelOutput + "]")
-    # Save the Word2Vec model and finish
-    model.save(modelOutput)
-    print("[Done saving model]")
-
+generateTrainingFiles = True
 
 # -- Run --
 # Load based on config
 if generateModel or generateTrainingFiles:
-    print("[Generate training files: " + str(generateTrainingFiles) + "]")
-    print("[Generate model: " + str(generateModel) + "]")
+    print("[Generating files]")
+    print("|\t[Model type: " + str(modelType) + "]")
+    print("|\t[Generate training files: " + str(generateTrainingFiles) + "]")
+    print("|\t[Generate model: " + str(generateModel) + "]")
     # Load the data if it will be used
-    loadData()
     # Generate training files if asked to
     if generateTrainingFiles:
-        genTrainFiles()
+        modelType.genTrainFiles(trainingFileIn, trainingFileOut)
     # Generate model if asked to
     if generateModel:
-        genModel()
+        modelType.genModel(modelOutput)
 else:
     # Nothing to do, just exit
     print("[Nothing to do]")
